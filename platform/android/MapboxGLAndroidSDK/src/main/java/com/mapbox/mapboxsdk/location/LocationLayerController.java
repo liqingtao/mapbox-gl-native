@@ -86,6 +86,8 @@ final class LocationLayerController {
 
   private boolean isHidden = true;
   private boolean pulsingCircleIsEnabled;
+  private PulsingLocationCircleAnimator pulsingLocationCircleAnimator;
+
 
   @Nullable
   private String layerBelow;
@@ -118,6 +120,7 @@ final class LocationLayerController {
 
   void applyStyle(@NonNull LocationComponentOptions options) {
     Logger.d(TAG, "applyStyle()");
+    this.options = options;
     String newLayerBelowOption = options.layerBelow();
     if ((layerBelow != null || newLayerBelowOption != null)) {
       if (layerBelow == null || !layerBelow.equals(newLayerBelowOption)) {
@@ -131,9 +134,6 @@ final class LocationLayerController {
         setRenderMode(renderMode);
       }
     }
-
-    this.options = options;
-
     float elevation = options.elevation();
     // Only add icon elevation if the values greater than 0.
     if (elevation > 0) {
@@ -280,10 +280,10 @@ final class LocationLayerController {
   }
 
   private void addPulsingCircleLayerToMap() {
+    pulsingCircleIsEnabled = options.pulseEnabled();
     Logger.d(TAG, "LocationLayerController ----> addPulsingCircleLayerToMap()");
     Layer pulsingCircleLayer = layerSourceProvider.generatePulsingCircleLayer();
     addLayerToMap(pulsingCircleLayer, ACCURACY_LAYER);
-    pulsingCircleIsEnabled = options.pulseEnabled();
   }
 
   private void removeLayers() {
