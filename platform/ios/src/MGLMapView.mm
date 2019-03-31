@@ -701,8 +701,10 @@ public:
     _glView.layer.opaque = _opaque;
     _glView.delegate = self;
 
+#ifdef MGL_EAGLLAYER_PRESENTS_WITH_TRANSACTION
     CAEAGLLayer *eaglLayer = MGL_OBJC_DYNAMIC_CAST(_glView.layer, CAEAGLLayer);
     eaglLayer.presentsWithTransaction = YES;
+#endif
     
     [_glView bindDrawable];
     [self insertSubview:_glView atIndex:0];
